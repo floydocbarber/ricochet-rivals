@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="64" fill="#0a0a1a"/>
+  <!-- Walls -->
+  <rect x="40" y="40" width="432" height="432" rx="16" fill="none" stroke="#1a1a3a" stroke-width="8"/>
+  <!-- Ricochet path -->
+  <polyline points="100,400 200,150 370,300 412,80" fill="none" stroke="#ff00ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+  <polyline points="100,400 200,150 370,300 412,80" fill="none" stroke="#00d4ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Bounce points -->
+  <circle cx="200" cy="150" r="8" fill="#ff00ff" opacity="0.8"/>
+  <circle cx="370" cy="300" r="8" fill="#ff00ff" opacity="0.8"/>
+  <!-- Ball -->
+  <circle cx="412" cy="80" r="18" fill="#00d4ff"/>
+  <circle cx="412" cy="80" r="12" fill="#00d4ff" opacity="0.5" filter="url(#glow)"/>
+  <!-- Start point -->
+  <circle cx="100" cy="400" r="14" fill="#ff00ff"/>
+  <!-- Glow filter -->
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- RR text -->
+  <text x="256" y="470" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="48" fill="#00d4ff" opacity="0.3">RR</text>
+</svg>

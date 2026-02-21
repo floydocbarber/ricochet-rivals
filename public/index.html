@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Ricochet Rivals</title>
+  <meta name="theme-color" content="#0a0a1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Bounce to kill. More bounces = more damage. 1v1 or vs AI.">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="menu">
+    <h1>🎯 RICOCHET<br>RIVALS</h1>
+    <p class="tagline">Bounce to kill. More bounces = more damage.</p>
+    <div id="menu-buttons">
+      <button id="btn-play" onclick="startGame('ai')">PLAY vs AI</button>
+      <button id="btn-create" onclick="createRoom()">CREATE ROOM</button>
+      <div id="join-row">
+        <input id="room-input" type="text" placeholder="ROOM CODE" maxlength="4" autocomplete="off" spellcheck="false">
+        <button id="btn-join" onclick="joinRoom()">JOIN</button>
+      </div>
+    </div>
+    <div id="room-status" style="display:none">
+      <p id="room-status-text"></p>
+      <button id="btn-cancel-room" onclick="cancelRoom()">CANCEL</button>
+    </div>
+    <div id="join-error" style="display:none"></div>
+    <div id="stats-display" class="stats-display"></div>
+    <div class="controls-info">
+      <p><strong>WASD</strong> — Move &nbsp;|&nbsp; <strong>Mouse</strong> — Aim</p>
+      <p><strong>Hold Click</strong> — Charge &nbsp;|&nbsp; <strong>Release</strong> — Fire</p>
+      <p>📱 Touch controls on mobile</p>
+    </div>
+  </div>
+  <canvas id="game"></canvas>
+  <button id="btn-mute" onclick="toggleMute()" class="mute-btn">🔊</button>
+  <div id="hud">
+    <div id="hud-left">
+      <div class="health-bar"><div id="hp-player" class="hp-fill player-hp"></div></div>
+      <span id="score-player">YOU: 0</span>
+    </div>
+    <div id="hud-center"><span id="round-info"></span></div>
+    <div id="hud-right">
+      <span id="score-ai">RIVAL: 0</span>
+      <div class="health-bar"><div id="hp-ai" class="hp-fill ai-hp"></div></div>
+    </div>
+  </div>
+  <div id="charge-bar-container">
+    <div id="charge-bar"></div>
+  </div>
+  <div id="touch-controls">
+    <div id="joystick-zone"><div id="joystick-knob"></div></div>
+    <div id="fire-zone">HOLD<br>TO AIM</div>
+  </div>
+  <div id="game-over" style="display:none">
+    <h2 id="go-text"></h2>
+    <p id="go-rematch-status" style="display:none; color:#888; margin-bottom:10px;"></p>
+    <button id="btn-play-again" onclick="playAgain()">PLAY AGAIN</button>
+    <button id="btn-back-menu" onclick="backToMenu()" style="margin-top:10px; background:#333;">MAIN MENU</button>
+  </div>
+  <div id="disconnect-overlay" style="display:none">
+    <h2>⚡ OPPONENT DISCONNECTED</h2>
+    <button onclick="backToMenu()">MAIN MENU</button>
+  </div>
+  <div id="rotate-overlay">
+    <div class="rotate-icon">📱↪️</div>
+    <p>Please rotate your device to landscape</p>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="game.js"></script>
+<script>
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("/sw.js").then(reg => {
+    reg.addEventListener("updatefound", () => {
+      const sw = reg.installing;
+      sw.addEventListener("statechange", () => {
+        if (sw.state === "installed" && navigator.serviceWorker.controller) {
+          const banner = document.createElement("div");
+          banner.id = "update-banner";
+          banner.innerHTML = "Update available! <button onclick=\"location.reload()\">Refresh</button>";
+          banner.style.cssText = "position:fixed;bottom:0;left:0;right:0;background:#8338ec;color:#fff;padding:12px;text-align:center;z-index:10000;font-size:0.95rem;";
+          banner.querySelector("button").style.cssText = "margin-left:12px;padding:6px 16px;border:2px solid #fff;border-radius:6px;background:transparent;color:#fff;font-weight:bold;cursor:pointer;";
+          document.body.appendChild(banner);
+        }
+      });
+    });
+  }).catch(()=>{});
+}
+</script>
+</body>
+</html>
